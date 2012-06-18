@@ -4,50 +4,41 @@ Created on Jun 13, 2012
 @author: sharvey3
 '''
 
+import cards
+import strategy
 
-import re
-import yaml
-import random
-from card import *
+chart = strategy.table()
 
-stream = file('table.yml', 'r')
-table = yaml.load(stream)
-stream.close()
+player_input = ""
 
-plays = ({})
+while player_input != "Q":
 
-d_cards = re.split(' ', "2 3 4 5 6 7 8 9 10 A")
-
-for p_hand in table.keys():
-		
-	p_plays = re.split(' *', table[p_hand])
-
-	i = 0
-
-	for d_has in d_cards:
+	h = cards.playerhand()
+	d = cards.dealercard()
+	correct = chart.get_correct(h.lookup, d.value)
 	
-		p_play = p_plays[i]
-		
-		plays[str(p_hand), str(d_has)] = p_play
-
-		i += 1
-
-
-random.seed()
-
-#for tests in range(1,20):
-#	
-#	p_hand = random.choice(table.keys())
-#	d_has = random.choice(d_cards)
-#	correct = plays[p_hand, d_has]
-#	
-#	print "P: %s	D: %s	Do: %s" % (p_hand, d_has, correct)
+	print "XX", d.display
+	print h.display
+	# print correct
 	
+	player_input = raw_input("H S P D (Q)? ")
+	player_input = player_input.upper()
+	
+	if player_input == correct:
+		print "Correct!"
+	elif player_input == "Q":
+		print "Thanks for your time."
+		break
+	else:
+		print "Sorry - correct answer is", correct
+	
+	print
+		
+	
+	
+		
+		
 
-for tests in range(1,200):
-	#c = newcard()
-	#print c.label, c.suit, c.value, c.display
-	h = playerhand()
-	d = dealercard()
-	print h.display, h.lookup, d.value, plays[h.lookup, d.value]
+
+
 
