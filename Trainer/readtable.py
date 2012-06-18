@@ -28,7 +28,7 @@ for p_hand in table.keys():
 	
 		p_play = p_plays[i]
 		
-		plays[p_hand, d_has] = p_play
+		plays[str(p_hand), str(d_has)] = p_play
 
 		i += 1
 
@@ -48,5 +48,6 @@ for tests in range(1,200):
 	#c = newcard()
 	#print c.label, c.suit, c.value, c.display
 	h = playerhand()
-	print h.display, h.lookup
+	d = dealercard()
+	print h.display, h.lookup, d.value, plays[h.lookup, d.value]
 
