@@ -5,6 +5,12 @@ Created on Jun 14, 2012
 '''
 import random
 
+# Let's define a few globals to make life easier...
+
+SOFT = 		1
+NO_ACE = 	2
+NO_5_10 = 	3
+
 class newcard():
 	'''
 	Randomly generate a card
@@ -12,14 +18,33 @@ class newcard():
 
 	random.seed()
 
-	def __init__(self):
+	def __init__(self, labeltype = "all"):
 		'''
 		Constructor
 		'''
+			
+		labels = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')	
 		
-		# All the "labels" possible - not their values
-		labels = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')
 		
+			
+		if labeltype == SOFT:
+			labels = ('2', '3', '4', '5', '6', '7', '8', '9')
+			
+		elif labeltype == NO_5_10:
+			labels = ('2', '3', '4', '6', '7', '8', '9', 'A')
+			
+		elif labeltype == NO_ACE:
+			labels = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K')
+			
+		elif len(labeltype) == 1:
+			labels = labeltype
+			
+		
+			
+		
+			
+			
+				
 		# Suit doesn't matter as there are multiple cards in a shoe
 		# Also pick a random label
 		self.suit = random.choice('CHSD')
@@ -44,28 +69,38 @@ class playerhand():
 		
 	def __init__(self, handtype = "all"):
 
-		c1 = newcard()
-		c2 = newcard()
-		
 		tests = 0
 		
-		while validhand(c1, c2, handtype) == False:
-			c1 = newcard()
-			c2 = newcard()
-			tests += 1
-			
-		print "Tests:", tests
+		if handtype == "all":
+			types = ('soft', 'hard', 'split')
+			handtype = random.choice(types)		
+		
+			print handtype,
+		
+		if handtype == "soft":
+			c1 = newcard("A")
+			c2 = newcard(SOFT)
 
-
-		# If card two is an ace, swap it to card #1
-		# (both for lookup purpose & to be easy on players)
-		c2value = c2.value
-		if c2value == "A":
-			c3 = newcard()
-			c3 = c1
-			c1 = c2
-			c2 = c3
+		elif handtype == "hard":
+			c1 = newcard(NO_ACE)
+			c2 = newcard(NO_ACE)
 			
+			while c2.value == c1.value:
+				c2 = newcard(NO_ACE)
+				tests += 1
+		
+		elif handtype == "split":
+			c1 = newcard(NO_5_10)
+			c2 = newcard(NO_5_10)
+			
+			if c2.value != c1.value:
+				c2 = newcard(c1.label)
+				tests += 1
+		
+		print "Tests: ", tests
+		
+#
+#			
 		# Compile the hand's "lookup" value to match the keys found
 		# in the YAML strategy table (15, A4, 77, etc.)
 		if c1.value == c2.value:
@@ -98,53 +133,53 @@ class dealercard(newcard):
 
 # --------------------------
 
-def validhand(c1, c2, handtype):
+#def validhand(c1, c2, handtype):
 
 #		There has got to be a better way to handle this, probably by
 #		changing the card values directly, instead of getting new hands.
 		
 		
-		if handtype == "all":
-			
-			if c1.value == 10 and c2.value == 10:
-				return False
-			elif c1.value == 5 and c2.value == 5:
-				return False
-			elif c1.value == "A" and c2.value == 10:
-				return False
-			elif c1.value == 10 and c2.value == "A":
-				return False
-			else:
-				return True	
-			
-			
-		elif handtype == "hard":
-			
-			if c1.value == c2.value:
-				return False
-			elif c1.value == "A" or c2.value == "A":
-				return False
-			else:
-				return True
-
-			
-		elif handtype == "soft":
-			if (c1.value == "A" or c2.value == "A") and \
-				(c1.value != 10 and c2.value != 10):
-					return True
-			else:
-				return False
-
-	
-		elif handtype == "split":
-			if c1.value != c2.value:
-				return False
-			elif c1.value == 10 or c1.value == "5":
-				return False
-			elif c1.value == "5" and c2.value == "5":
-				return False
-			else:
-				return True
+#		if handtype == "all":
+#			
+#			if c1.value == 10 and c2.value == 10:
+#				return False
+#			elif c1.value == 5 and c2.value == 5:
+#				return False
+#			elif c1.value == "A" and c2.value == 10:
+#				return False
+#			elif c1.value == 10 and c2.value == "A":
+#				return False
+#			else:
+#				return True	
+#			
+#			
+#		elif handtype == "hard":
+#			
+#			if c1.value == c2.value:
+#				return False
+#			elif c1.value == "A" or c2.value == "A":
+#				return False
+#			else:
+#				return True
+#
+#			
+#		elif handtype == "soft":
+#			if (c1.value == "A" or c2.value == "A") and \
+#				(c1.value != 10 and c2.value != 10):
+#					return True
+#			else:
+#				return False
+#
+#	
+#		elif handtype == "split":
+#			if c1.value != c2.value:
+#				return False
+#			elif c1.value == 10 or c1.value == "5":
+#				return False
+#			elif c1.value == "5" and c2.value == "5":
+#				return False
+#			else:
+#				return True
 			
 			
 
