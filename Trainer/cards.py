@@ -1,6 +1,6 @@
 '''
 Created on Jun 14, 2012
-
+	Generates cards and player hands
 @author: sharvey3
 '''
 import random
@@ -33,26 +33,29 @@ class newcard():
 			
 		self.display = self.label + self.suit
 		
+
+# ----------------------------------
+		
 		
 class playerhand():
 	'''
 	Generate a player's hand from 2 cards
 	'''
 		
-	def __init__(self):
-		c1 = newcard()
-		
-		# From here until (# END)... No blackjacks for players!
+	def __init__(self, handtype = "all"):
 
-		while c1.value == 'A':
-			c1 = newcard()
-		
+		c1 = newcard()
 		c2 = newcard()
 		
-		while (c1.value == 10 and c2.value == 'A'):
-			c2 = newcard() 
-					
-		# END of blackjack prevention
+		tests = 0
+		
+		while validhand(c1, c2, handtype) == False:
+			c1 = newcard()
+			c2 = newcard()
+			tests += 1
+			
+		print "Tests:", tests
+
 
 		# If card two is an ace, swap it to card #1
 		# (both for lookup purpose & to be easy on players)
@@ -76,14 +79,73 @@ class playerhand():
 		# And, at long last, a nicely printable version of your hand
 		self.display = c1.display + " " + c2.display
 		
-			
+	
+	
+	
+				
+# ---------------------------
 			
 class dealercard(newcard):
+	'''
+	Simple: get a card for the dealer
+	'''
 	
 	def __init__(self):
 		dcard = newcard()
 		self.value = str(dcard.value)
 		self.display = dcard.display
 	
-	
+
+# --------------------------
+
+def validhand(c1, c2, handtype):
+
+#		There has got to be a better way to handle this, probably by
+#		changing the card values directly, instead of getting new hands.
 		
+		
+		if handtype == "all":
+			
+			if c1.value == 10 and c2.value == 10:
+				return False
+			elif c1.value == 5 and c2.value == 5:
+				return False
+			elif c1.value == "A" and c2.value == 10:
+				return False
+			elif c1.value == 10 and c2.value == "A":
+				return False
+			else:
+				return True	
+			
+			
+		elif handtype == "hard":
+			
+			if c1.value == c2.value:
+				return False
+			elif c1.value == "A" or c2.value == "A":
+				return False
+			else:
+				return True
+
+			
+		elif handtype == "soft":
+			if (c1.value == "A" or c2.value == "A") and \
+				(c1.value != 10 and c2.value != 10):
+					return True
+			else:
+				return False
+
+	
+		elif handtype == "split":
+			if c1.value != c2.value:
+				return False
+			elif c1.value == 10 or c1.value == "5":
+				return False
+			elif c1.value == "5" and c2.value == "5":
+				return False
+			else:
+				return True
+			
+			
+
+			
