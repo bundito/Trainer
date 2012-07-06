@@ -1,6 +1,6 @@
 '''
 Created on Jun 18, 2012
-
+	Reads the YML strategy table
 @author: sharvey3
 
 '''		
@@ -8,12 +8,8 @@ import re
 import yaml
 
 class table():
-	'''
 
-	'''
-	
 	plays = ({})
-
 
 	def __init__(self):
 		'''

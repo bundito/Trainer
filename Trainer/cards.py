@@ -24,9 +24,7 @@ class newcard():
 		'''
 			
 		labels = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')	
-		
-		
-			
+					
 		if labeltype == SOFT:
 			labels = ('2', '3', '4', '5', '6', '7', '8', '9')
 			
@@ -38,12 +36,6 @@ class newcard():
 			
 		elif len(labeltype) == 1:
 			labels = labeltype
-			
-		
-			
-		
-			
-			
 				
 		# Suit doesn't matter as there are multiple cards in a shoe
 		# Also pick a random label
@@ -99,8 +91,6 @@ class playerhand():
 		
 		print "Tests: ", tests
 		
-#
-#			
 		# Compile the hand's "lookup" value to match the keys found
 		# in the YAML strategy table (15, A4, 77, etc.)
 		if c1.value == c2.value:
@@ -130,57 +120,5 @@ class dealercard(newcard):
 		self.value = str(dcard.value)
 		self.display = dcard.display
 	
-
-# --------------------------
-
-#def validhand(c1, c2, handtype):
-
-#		There has got to be a better way to handle this, probably by
-#		changing the card values directly, instead of getting new hands.
-		
-		
-#		if handtype == "all":
-#			
-#			if c1.value == 10 and c2.value == 10:
-#				return False
-#			elif c1.value == 5 and c2.value == 5:
-#				return False
-#			elif c1.value == "A" and c2.value == 10:
-#				return False
-#			elif c1.value == 10 and c2.value == "A":
-#				return False
-#			else:
-#				return True	
-#			
-#			
-#		elif handtype == "hard":
-#			
-#			if c1.value == c2.value:
-#				return False
-#			elif c1.value == "A" or c2.value == "A":
-#				return False
-#			else:
-#				return True
-#
-#			
-#		elif handtype == "soft":
-#			if (c1.value == "A" or c2.value == "A") and \
-#				(c1.value != 10 and c2.value != 10):
-#					return True
-#			else:
-#				return False
-#
-#	
-#		elif handtype == "split":
-#			if c1.value != c2.value:
-#				return False
-#			elif c1.value == 10 or c1.value == "5":
-#				return False
-#			elif c1.value == "5" and c2.value == "5":
-#				return False
-#			else:
-#				return True
-			
-			
 
 			
